@@ -16,8 +16,8 @@ var port = Environment.GetEnvironmentVariable("PORT");
 if (!string.IsNullOrEmpty(port))
     builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is not set. See README.md.");
+var connectionString = ConnectionStringParser.ToNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is not set. See README.md."));
 
 builder.Services.AddDbContext<AppDbContext>(o => o.UseNpgsql(connectionString));
 builder.Services.AddDataProtection().PersistKeysToDbContext<AppDbContext>().SetApplicationName("Salonfur");

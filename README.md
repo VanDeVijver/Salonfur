@@ -60,7 +60,7 @@ dotnet ef database update --project Salonfur.Core --startup-project Salonfur.Web
 
 ## Deploy to Render
 
-1. Create a project on [Neon](https://neon.tech). Copy the connection details and write them in Npgsql format (Neon shows a `postgresql://` URL that must be rewritten):
+1. Create a project on [Neon](https://neon.tech) and copy its connection string. Both the `postgresql://…` URL that Neon shows and the Npgsql keyword format work:
 
    ```
    Host=<endpoint>.neon.tech;Database=<db>;Username=<user>;Password=CHANGE_ME;SSL Mode=Require

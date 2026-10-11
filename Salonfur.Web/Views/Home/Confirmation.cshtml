@@ -1,0 +1,17 @@
+@model BookingConfirmationViewModel
+@{
+    ViewData["Title"] = "Afspraak bevestigd";
+    var culture = System.Globalization.CultureInfo.GetCultureInfo("nl-BE");
+}
+<section class="page center">
+  <div class="wrap">
+    <p class="label" style="justify-content:center">afspraak bevestigd</p>
+    <h1>Tot <i>binnenkort</i>, @Model.DogName</h1>
+    <p>Je afspraak voor <b>@Model.ServiceName</b> staat genoteerd op
+      <b>@Model.Date.ToString("dddd d MMMM yyyy", culture) om @Model.StartTime.ToString("H:mm")</b>.</p>
+    <p>Kan je toch niet komen? Laat het ons zo snel mogelijk weten via @SalonInfo.Phones[0].Display.</p>
+    <div class="hero-actions" style="margin-top:28px">
+      <a class="btn" href="/">Terug naar de website</a>
+    </div>
+  </div>
+</section>

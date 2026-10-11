@@ -1,0 +1,17 @@
+# Local development database only. Production uses Neon.
+services:
+  db:
+    image: postgres:17
+    container_name: salonfur-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: salonfur
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-salonfur_dev}
+    ports:
+      - "5432:5432"
+    volumes:
+      - salonfur-db-data:/var/lib/postgresql/data
+
+volumes:
+  salonfur-db-data:

@@ -1,0 +1,47 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"] as string;
+    string? Current(string name) => controller == name ? "page" : null;
+}
+<!doctype html>
+<html lang="nl">
+<head>
+    <partial name="_Head" />
+    <meta name="robots" content="noindex">
+</head>
+<body>
+<a class="skip" href="#main">Naar de inhoud</a>
+
+<header class="admin-bar">
+  <div class="nav">
+    <a class="logo" href="/admin" aria-label="salon.fur beheer"><partial name="_Logo" /></a>
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+      <nav aria-label="Beheermenu">
+        <a href="/admin" aria-current="@Current("Admin")">Agenda</a>
+        <a href="/admin/diensten" aria-current="@Current("Services")">Diensten</a>
+        <a href="/admin/sluitingen" aria-current="@Current("ClosedPeriods")">Sluitingen</a>
+        <a href="/">Website</a>
+        <form method="post" action="/admin/logout">
+          @Html.AntiForgeryToken()
+          <button type="submit">Uitloggen</button>
+        </form>
+      </nav>
+    }
+  </div>
+</header>
+
+<main id="main" class="admin">
+  <div class="wrap">
+    @if (TempData["Message"] is string message)
+    {
+      <p class="alert" role="status">@message</p>
+    }
+    @RenderBody()
+  </div>
+</main>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

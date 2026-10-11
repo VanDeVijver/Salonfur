@@ -1,0 +1,30 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = Model.IsNotFound ? "Pagina niet gevonden" : "Er ging iets mis";
+}
+<section class="page center">
+  <div class="wrap">
+    @if (Model.IsNotFound)
+    {
+      <h1>Hier is <i>niemand</i></h1>
+      <p>Deze pagina bestaat niet (meer). Misschien is ze gaan wandelen.</p>
+    }
+    else if (Model.StatusCode == 429)
+    {
+      <h1>Even <i>rustig</i></h1>
+      <p>Er kwamen te veel aanvragen na elkaar binnen. Probeer het over enkele minuten opnieuw, of bel ons.</p>
+    }
+    else
+    {
+      <h1>Oei, <i>iets</i> ging mis</h1>
+      <p>Er liep iets fout bij het laden van deze pagina. Probeer het opnieuw, of bel ons als het blijft gebeuren.</p>
+    }
+    <div class="hero-actions" style="margin-top:28px">
+      <a class="btn" href="/">Naar de startpagina</a>
+    </div>
+    @if (!string.IsNullOrEmpty(Model.RequestId) && !Model.IsNotFound)
+    {
+      <p class="mono" style="margin-top:28px">referentie: @Model.RequestId</p>
+    }
+  </div>
+</section>

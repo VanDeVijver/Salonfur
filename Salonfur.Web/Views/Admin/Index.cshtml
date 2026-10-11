@@ -1,0 +1,26 @@
+@model CalendarViewModel
+@{
+    ViewData["Title"] = "Agenda";
+}
+<div class="admin-head">
+  <h1>Agenda</h1>
+  <a class="btn btn-l btn-sm" href="/admin/sluitingen">Sluiting toevoegen</a>
+</div>
+
+<div class="panel cal-card" id="calendar-card">
+  <div class="cal-skeleton" aria-hidden="true">
+    <div class="skeleton"></div>
+    <div class="skeleton tall"></div>
+  </div>
+  <div id="calendar"
+       data-events-url="/admin/agenda"
+       data-hidden-days="@string.Join(",", Model.HiddenDays)"
+       data-slot-min="@Model.SlotMinTime"
+       data-slot-max="@Model.SlotMaxTime"></div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@fullcalendar/core@6.1.15/locales/nl.global.min.js"></script>
+    <script src="~/js/admin-calendar.js" asp-append-version="true"></script>
+}

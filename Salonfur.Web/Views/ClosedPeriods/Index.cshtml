@@ -1,0 +1,56 @@
+@model ClosedPeriodsIndexViewModel
+@{
+    ViewData["Title"] = "Sluitingen";
+    var culture = System.Globalization.CultureInfo.GetCultureInfo("nl-BE");
+    string Format(DateOnly d) => d.ToString("ddd d MMMM yyyy", culture);
+}
+<div class="admin-head">
+  <h1>Sluitingen</h1>
+</div>
+
+<form class="form-card form-narrow" asp-action="Create" method="post">
+  <p class="fs"><b>+</b>verlof of sluitingsdag toevoegen</p>
+  <div class="row">
+    <div>
+      <label>Van<input asp-for="Form.StartDate" type="date"></label>
+      <span asp-validation-for="Form.StartDate" class="field-error"></span>
+    </div>
+    <div>
+      <label>Tot en met<input asp-for="Form.EndDate" type="date"></label>
+      <span asp-validation-for="Form.EndDate" class="field-error"></span>
+    </div>
+  </div>
+  <label>Reden <span style="font-weight:400;color:var(--muted)">(optioneel, zichtbaar voor klanten)</span><input asp-for="Form.Reason" placeholder="bv. verlof"></label>
+  <span asp-validation-for="Form.Reason" class="field-error"></span>
+  <button class="btn" type="submit">Sluiting toevoegen</button>
+</form>
+
+<div class="panel form-narrow" style="margin-top:16px">
+  <p class="fs" style="margin-bottom:18px">komende sluitingen</p>
+  @if (Model.Upcoming.Count == 0)
+  {
+    <p style="margin:0;color:var(--muted)">Geen geplande sluitingen.</p>
+  }
+  else
+  {
+    <ul class="list">
+      @foreach (var c in Model.Upcoming)
+      {
+        <li>
+          <div>
+            <div class="title">@(c.StartDate == c.EndDate ? Format(c.StartDate) : $"{Format(c.StartDate)} – {Format(c.EndDate)}")</div>
+            @if (!string.IsNullOrWhiteSpace(c.Reason)) { <div class="sub">@c.Reason</div> }
+          </div>
+          <form method="post" action="/admin/sluitingen/@c.Id/verwijderen" data-confirm="Deze sluiting verwijderen?">
+            @Html.AntiForgeryToken()
+            <button class="link-btn" type="submit">Verwijderen</button>
+          </form>
+        </li>
+      }
+    </ul>
+  }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

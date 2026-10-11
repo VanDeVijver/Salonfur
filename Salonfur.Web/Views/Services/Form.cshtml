@@ -1,0 +1,53 @@
+@model ServiceFormViewModel
+@{
+    var isNew = Model.Id is null;
+    ViewData["Title"] = isNew ? "Dienst toevoegen" : "Dienst bewerken";
+    var action = isNew ? "/admin/diensten/nieuw" : $"/admin/diensten/{Model.Id}/bewerken";
+}
+<div class="admin-head">
+  <h1>@ViewData["Title"]</h1>
+  <a class="btn btn-l btn-sm" href="/admin/diensten">← Diensten</a>
+</div>
+
+<form class="form-card form-narrow" method="post" action="@action">
+  @Html.AntiForgeryToken()
+  <label>Naam<input asp-for="Name"></label>
+  <span asp-validation-for="Name" class="field-error"></span>
+
+  <label>Beschrijving<textarea asp-for="Description" rows="3"></textarea></label>
+  <span asp-validation-for="Description" class="field-error"></span>
+
+  <label>Label <span style="font-weight:400;color:var(--muted)">(optioneel, bv. "meest gevraagd")</span><input asp-for="Tag"></label>
+  <span asp-validation-for="Tag" class="field-error"></span>
+
+  <div class="row">
+    <div>
+      <label>Voor de prijs <span style="font-weight:400;color:var(--muted)">(bv. "vanaf")</span><input asp-for="PriceLabel"></label>
+      <span asp-validation-for="PriceLabel" class="field-error"></span>
+    </div>
+    <div>
+      <label>Prijs <span style="font-weight:400;color:var(--muted)">(bv. "€ 35")</span><input asp-for="Price"></label>
+      <span asp-validation-for="Price" class="field-error"></span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label>Duur in minuten<input asp-for="DurationMinutes" type="number" min="15" max="480" step="15"></label>
+      <span asp-validation-for="DurationMinutes" class="field-error"></span>
+    </div>
+    <div>
+      <label>Volgorde op de website<input asp-for="SortOrder" type="number" min="0" max="999"></label>
+      <span asp-validation-for="SortOrder" class="field-error"></span>
+    </div>
+  </div>
+
+  <label class="check"><input asp-for="IsBookable">Klanten kunnen deze dienst online boeken</label>
+  <label class="check"><input asp-for="IsFeatured">Uitlichten op de website (donkere kaart)</label>
+
+  <button class="btn" type="submit">Opslaan</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

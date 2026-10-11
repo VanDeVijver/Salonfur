@@ -1,0 +1,21 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Inloggen";
+}
+<div class="login">
+  <form class="form-card" asp-action="Login" method="post">
+    <h1>Inloggen</h1>
+    <div asp-validation-summary="ModelOnly" class="alert alert-error"></div>
+    <input type="hidden" asp-for="ReturnUrl">
+    <label>E-mail<input asp-for="Email" autocomplete="username"></label>
+    <span asp-validation-for="Email" class="field-error"></span>
+    <label>Wachtwoord<input asp-for="Password" autocomplete="current-password"></label>
+    <span asp-validation-for="Password" class="field-error"></span>
+    <label class="check"><input asp-for="RememberMe">Ingelogd blijven</label>
+    <button class="btn" type="submit">Inloggen</button>
+  </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

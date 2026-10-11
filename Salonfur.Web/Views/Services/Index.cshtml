@@ -1,0 +1,36 @@
+@model ServiceListViewModel
+@{
+    ViewData["Title"] = "Diensten";
+}
+<div class="admin-head">
+  <h1>Diensten</h1>
+  <a class="btn btn-sm" href="/admin/diensten/nieuw">Dienst toevoegen</a>
+</div>
+
+<div class="panel">
+  @if (Model.Services.Count == 0)
+  {
+    <p style="margin:0;color:var(--muted)">Er zijn nog geen diensten.</p>
+  }
+  else
+  {
+    <ul class="list">
+      @foreach (var s in Model.Services)
+      {
+        <li>
+          <div>
+            <div class="title">@s.Name@if (s.IsFeatured) {<span class="chip">uitgelicht</span>}@if (!s.IsBookable) {<span class="chip">niet online boekbaar</span>}</div>
+            <div class="sub">@s.PriceLabel @s.Price · @s.DurationMinutes min</div>
+          </div>
+          <div class="actions">
+            <a href="/admin/diensten/@s.Id/bewerken">Bewerken</a>
+            <form method="post" action="/admin/diensten/@s.Id/verwijderen" data-confirm="&quot;@s.Name&quot; verwijderen?">
+              @Html.AntiForgeryToken()
+              <button class="link-btn" type="submit">Verwijderen</button>
+            </form>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</div>

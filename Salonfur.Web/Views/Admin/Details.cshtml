@@ -1,0 +1,43 @@
+@model ReservationDetailsViewModel
+@{
+    ViewData["Title"] = $"Afspraak {Model.DogName}";
+    var culture = System.Globalization.CultureInfo.GetCultureInfo("nl-BE");
+}
+<div class="admin-head">
+  <h1>@Model.DogName <i>·</i> @Model.ServiceName</h1>
+  <a class="btn btn-l btn-sm" href="/admin">← Agenda</a>
+</div>
+
+<div class="panel">
+  <dl class="details">
+    <dt>Wanneer</dt>
+    <dd>@Model.Date.ToString("dddd d MMMM yyyy", culture), @Model.StartTime.ToString("H:mm") – @Model.EndTime.ToString("H:mm")</dd>
+    <dt>Beurt</dt>
+    <dd>@Model.ServiceName</dd>
+    <dt>Hond</dt>
+    <dd>@Model.DogName@(string.IsNullOrWhiteSpace(Model.Breed) ? "" : $", {Model.Breed}") (@Model.Size.ToString().ToLowerInvariant())@if (Model.FirstVisit) {<span class="chip">eerste keer</span>}</dd>
+    <dt>Klant</dt>
+    <dd>@Model.CustomerName</dd>
+    <dt>GSM</dt>
+    <dd><a href="tel:@Model.Phone">@Model.Phone</a></dd>
+    @if (!string.IsNullOrWhiteSpace(Model.Email))
+    {
+      <dt>E-mail</dt>
+      <dd><a href="mailto:@Model.Email">@Model.Email</a></dd>
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.Remarks))
+    {
+      <dt>Opmerkingen</dt>
+      <dd style="white-space:pre-line">@Model.Remarks</dd>
+    }
+    <dt>Geboekt op</dt>
+    <dd>@Model.CreatedAtLocal.ToString("d MMMM yyyy, H:mm", culture)</dd>
+  </dl>
+</div>
+
+<div class="panel">
+  <form method="post" action="/admin/reservaties/@Model.Id/verwijderen" data-confirm="Deze afspraak verwijderen? Dit kan niet ongedaan gemaakt worden.">
+    @Html.AntiForgeryToken()
+    <button class="btn btn-danger btn-sm" type="submit">Afspraak verwijderen</button>
+  </form>
+</div>

@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: salonfur
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: frankfurt
+    healthCheckPath: /healthz
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      # Neon connection string in Npgsql format; set in the Render dashboard.
+      - key: ConnectionStrings__DefaultConnection
+        sync: false
+      - key: Admin__Email
+        sync: false
+      - key: Admin__Password
+        sync: false

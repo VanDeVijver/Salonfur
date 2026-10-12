@@ -4,7 +4,7 @@ Website and booking system for salon.fur, a dog grooming salon in Oosterzele.
 
 - **Public site:** services, before & after photos, Google reviews, contact details, opening hours and a map.
 - **Online booking:** customers choose a service, a day and a free time slot. Slots follow the opening hours (Thu 9–18, Fri 9–18, Sat 9–12), the length of the service, existing bookings and closed days.
-- **Admin** (`/admin`, one account): calendar of all bookings, booking details and deletion, editing services and prices, and closed days (holidays).
+- **Admin** (`/admin`, one account): calendar of all bookings, booking details and deletion, editing services and prices, closed days (holidays), and photo albums (public at `/albums`). Photos are stored in the database, because Render's disk is wiped on every deploy.
 
 Stack: ASP.NET Core 9 MVC, EF Core with PostgreSQL (Npgsql), ASP.NET Core Identity. Local database in Docker, production database on Neon, hosting on Render.
 
@@ -30,7 +30,7 @@ Requirements: .NET 9 SDK, Docker Desktop, and the EF Core tool (`dotnet tool ins
 2. Set the secrets (once). Run these in the `Salonfur.Web` folder:
 
    ```bash
-   dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Port=5432;Database=salonfur;Username=postgres;Password=salonfur_dev"
+   dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Port=5433;Database=salonfur;Username=postgres;Password=salonfur_dev"
    dotnet user-secrets set "Admin:Email" "you@example.com"
    dotnet user-secrets set "Admin:Password" "CHANGE_ME"
    ```

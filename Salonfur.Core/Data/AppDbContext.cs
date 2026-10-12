@@ -10,6 +10,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
     public DbSet<Service> Services => Set<Service>();
     public DbSet<Reservation> Reservations => Set<Reservation>();
     public DbSet<ClosedPeriod> ClosedPeriods => Set<ClosedPeriod>();
+    public DbSet<Album> Albums => Set<Album>();
+    public DbSet<Photo> Photos => Set<Photo>();
 
     // Keeps login cookies and form tokens valid across container restarts on Render.
     public DbSet<DataProtectionKey> DataProtectionKeys => Set<DataProtectionKey>();
@@ -26,6 +28,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
         });
 
         modelBuilder.Entity<ClosedPeriod>().HasIndex(c => new { c.StartDate, c.EndDate });
+
+        modelBuilder.Entity<Photo>().HasOne(p => p.Album).WithMany(a => a.Photos).OnDelete(DeleteBehavior.Cascade);
 
         Seeder.Seed(modelBuilder);
     }

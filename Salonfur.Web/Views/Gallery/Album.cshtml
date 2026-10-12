@@ -1,0 +1,18 @@
+@model AlbumViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+<section class="page gallery-page">
+  <div class="wrap">
+    <p class="label"><a href="/albums">← alle albums</a></p>
+    <h1>@Model.Title</h1>
+    @if (!string.IsNullOrWhiteSpace(Model.Description)) { <p>@Model.Description</p> }
+
+    <div class="gallery">
+      @foreach (var photoId in Model.PhotoIds)
+      {
+        <a href="/fotos/@photoId" target="_blank"><img src="/fotos/@photoId" loading="lazy" alt="Foto uit het album @Model.Title"></a>
+      }
+    </div>
+  </div>
+</section>

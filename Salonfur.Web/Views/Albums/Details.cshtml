@@ -1,0 +1,40 @@
+@model AlbumViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+<div class="admin-head">
+  <h1>@Model.Title</h1>
+  <div class="actions" style="display:flex;gap:8px;flex-wrap:wrap">
+    <a class="btn btn-sm btn-l" href="/admin/albums">← Alle albums</a>
+    @if (Model.PhotoIds.Count > 0) { <a class="btn btn-sm btn-l" href="/albums/@Model.Id" target="_blank">Bekijk op de website ↗</a> }
+  </div>
+</div>
+
+<form class="form-card form-narrow" method="post" action="/admin/albums/@Model.Id/fotos" enctype="multipart/form-data">
+  @Html.AntiForgeryToken()
+  <p class="fs"><b>+</b>foto's toevoegen</p>
+  <label>Foto's <span style="font-weight:400;color:var(--muted)">(JPG, PNG of WebP, max. 10 MB per foto)</span><input type="file" name="files" accept="image/jpeg,image/png,image/webp" multiple required></label>
+  <button class="btn" type="submit">Uploaden</button>
+</form>
+
+<div class="panel" style="margin-top:16px">
+  @if (Model.PhotoIds.Count == 0)
+  {
+    <p style="margin:0;color:var(--muted)">Dit album heeft nog geen foto's.</p>
+  }
+  else
+  {
+    <div class="gallery">
+      @foreach (var photoId in Model.PhotoIds)
+      {
+        <figure>
+          <img src="/fotos/@photoId" loading="lazy" alt="">
+          <form method="post" action="/admin/albums/fotos/@photoId/verwijderen" data-confirm="Deze foto verwijderen?">
+            @Html.AntiForgeryToken()
+            <button class="link-btn" type="submit">Verwijderen</button>
+          </form>
+        </figure>
+      }
+    </div>
+  }
+</div>

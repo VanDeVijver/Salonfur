@@ -173,6 +173,31 @@ namespace Salonfur.Core.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Salonfur.Core.Entities.Album", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("character varying(80)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Albums");
+                });
+
             modelBuilder.Entity("Salonfur.Core.Entities.AppUser", b =>
                 {
                     b.Property<string>("Id")
@@ -260,6 +285,36 @@ namespace Salonfur.Core.Data.Migrations
                     b.HasIndex("StartDate", "EndDate");
 
                     b.ToTable("ClosedPeriods");
+                });
+
+            modelBuilder.Entity("Salonfur.Core.Entities.Photo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AlbumId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<byte[]>("Data")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AlbumId");
+
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("Salonfur.Core.Entities.Reservation", b =>
@@ -509,6 +564,17 @@ namespace Salonfur.Core.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Salonfur.Core.Entities.Photo", b =>
+                {
+                    b.HasOne("Salonfur.Core.Entities.Album", "Album")
+                        .WithMany("Photos")
+                        .HasForeignKey("AlbumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Album");
+                });
+
             modelBuilder.Entity("Salonfur.Core.Entities.Reservation", b =>
                 {
                     b.HasOne("Salonfur.Core.Entities.Service", "Service")
@@ -518,6 +584,11 @@ namespace Salonfur.Core.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("Salonfur.Core.Entities.Album", b =>
+                {
+                    b.Navigation("Photos");
                 });
 
             modelBuilder.Entity("Salonfur.Core.Entities.Service", b =>

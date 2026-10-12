@@ -1,0 +1,48 @@
+@model AlbumsIndexViewModel
+@{
+    ViewData["Title"] = "Albums";
+}
+<div class="admin-head">
+  <h1>Albums</h1>
+</div>
+
+<form class="form-card form-narrow" asp-action="Create" method="post">
+  <p class="fs"><b>+</b>nieuw album</p>
+  <label>Titel<input asp-for="Form.Title" placeholder="bv. Wiener time"></label>
+  <span asp-validation-for="Form.Title" class="field-error"></span>
+  <label>Beschrijving <span style="font-weight:400;color:var(--muted)">(optioneel, zichtbaar voor klanten)</span><input asp-for="Form.Description"></label>
+  <span asp-validation-for="Form.Description" class="field-error"></span>
+  <button class="btn" type="submit">Album aanmaken</button>
+</form>
+
+<div class="panel form-narrow" style="margin-top:16px">
+  @if (Model.Albums.Count == 0)
+  {
+    <p style="margin:0;color:var(--muted)">Er zijn nog geen albums.</p>
+  }
+  else
+  {
+    <ul class="list">
+      @foreach (var a in Model.Albums)
+      {
+        <li>
+          <div>
+            <div class="title">@a.Title</div>
+            <div class="sub">@a.PhotoIds.Count foto('s)</div>
+          </div>
+          <div class="actions">
+            <a href="/admin/albums/@a.Id">Foto's beheren</a>
+            <form method="post" action="/admin/albums/@a.Id/verwijderen" data-confirm="&quot;@a.Title&quot; en alle foto's verwijderen?">
+              @Html.AntiForgeryToken()
+              <button class="link-btn" type="submit">Verwijderen</button>
+            </form>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
